@@ -1,0 +1,56 @@
+Public Class MainForm
+
+    Private Sub MainForm_Load(sender As Object, e As EventArgs) Handles MyBase.Load
+
+        Me.EmployeesTableAdapter.Fill(Me.NorthwindW2014FDataSet.Employees)
+
+        Me.KKP_Sales_by_Category_ALL_yearsTableAdapter.Fill(Me.NorthwindW2014FDataSet.KKP_Sales_by_Category_ALL_years)
+
+        employeeComboBox.SelectedIndex = -1
+
+        Try
+            Me.employeeComboBox.DataSource = NorthwindW2014FDataSet.Employees
+            Me.employeeComboBox.DisplayMember = NorthwindW2014FDataSet.Employees.Columns("LastName").ToString
+            Me.employeeComboBox.ValueMember = NorthwindW2014FDataSet.Employees.Columns("EmployeeID").ToString
+
+        Catch fe As FormatException
+            MessageBox.Show(fe.Message)
+            Exit Sub
+
+        Catch ex As Exception
+            MessageBox.Show(ex.Message)
+            Exit Sub
+
+        End Try
+
+    End Sub
+
+    Private Sub employeeIndividualPerformanceButton_Click(sender As Object, e As EventArgs) Handles employeeIndividualPerformanceButton.Click
+
+        selectedEmployee = Convert.ToInt32(Me.employeeComboBox.SelectedValue.ToString)
+
+        IndividualEmployeeRecordForm.ShowDialog()
+
+    End Sub
+
+    Private Sub newEmployeeEntryButton_Click(sender As Object, e As EventArgs) Handles newEmployeeEntryButton.Click
+
+        NewEmployeeEntryForm.ShowDialog()
+
+    End Sub
+
+    Private Sub editEmployeeRecordButton_Click(sender As Object, e As EventArgs) Handles editEmployeeRecordButton.Click
+
+        selectedEmployee = Convert.ToInt32(Me.employeeComboBox.SelectedValue.ToString)
+
+        EditEmployeeRecordForm.ShowDialog()
+
+    End Sub
+
+    Private Sub commissionReportButton_Click(sender As Object, e As EventArgs) Handles commissionReportButton.Click
+
+        CommissionReportForm.ShowDialog()
+
+    End Sub
+
+End Class
