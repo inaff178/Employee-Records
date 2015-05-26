@@ -1,0 +1,43 @@
+Public Class CommissionReportForm
+
+    Private Sub CommissionReportForm_Load(sender As Object, e As EventArgs) Handles MyBase.Load
+
+        Dim employeeName, employeeTitle, employeeCountry, salesMonth As String
+        Dim totalSales, totalCommission As Double
+        Dim employeeID As Integer
+        Dim format As String = "{0,0}{1,20}{2,30}{3,20}{4,20}{5,20}{6,20}"
+
+        Me.KKP_Sales_by_EmployeeTableAdapter.Fill(Me.NorthwindW2014FDataSet.KKP_Sales_by_Employee)
+
+        Try
+            For Each row In NorthwindW2014FDataSet.KKP_Sales_by_Employee.Rows
+                employeeID = Convert.ToInt32(row.Item("EmployeeID").ToString)
+                employeeName = Convert.ToString(row.Item("EmployeeName").ToString)
+                employeeTitle = Convert.ToString(row.Item("Title").ToString)
+                employeeCountry = Convert.ToString(row.Item("Country").ToString)
+                salesMonth = Convert.ToString(row.Item("MonthYear").ToString)
+                totalSales = Convert.ToDouble(row.Item("SumOfSubtotal").ToString)
+
+                totalCommission = Commission(employeeTitle, employeeCountry, totalSales)
+
+                If totalCommission = -1 Then
+                    commissionReportTextBox.AppendText(String.Format(format, employeeID.ToString, employeeName.ToString, employeeTitle.ToString, employeeCountry.ToString, salesMonth.ToString, totalSales.ToString("C2"), "Error" & vbNewLine))
+                Else
+                    commissionReportTextBox.AppendText(String.Format(format, employeeID.ToString, employeeName.ToString, employeeTitle.ToString, employeeCountry.ToString, salesMonth.ToString, totalSales.ToString("C2"), totalCommission.ToString("C2") & vbNewLine))
+                End If
+
+            Next
+
+        Catch fe As FormatException
+            MessageBox.Show(fe.Message)
+            Exit Sub
+
+        Catch ex As Exception
+            MessageBox.Show(ex.Message)
+            Exit Sub
+
+        End Try
+
+    End Sub
+
+End Class
