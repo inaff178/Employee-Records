@@ -1,0 +1,57 @@
+Public Class NewEmployeeEntryForm
+
+    Private Sub NewEmployeeEntryForm_Load(sender As Object, e As EventArgs) Handles MyBase.Load
+
+        addEmployeeButton.Enabled = False
+
+    End Sub
+
+    Private Sub TextOrValueChanged(sender As Object, e As EventArgs) Handles EmployeeIDTextBox.TextChanged, LastNameTextBox.TextChanged, FirstNameTextBox.TextChanged,
+TitleTextBox.TextChanged, TitleOfCourtesyTextBox.TextChanged, BirthDateDateTimePicker.ValueChanged, HireDateDateTimePicker.ValueChanged, AddressTextBox.TextChanged,
+CityTextBox.TextChanged, RegionTextBox.TextChanged, PostalCodeTextBox.TextChanged, CountryTextBox.TextChanged, HomePhoneTextBox.TextChanged, ExtensionTextBox.TextChanged,
+NotesTextBox.TextChanged, ReportsToTextBox.TextChanged
+
+        addEmployeeButton.Enabled = True
+
+    End Sub
+
+    Private Sub addEmployeeButton_Click(sender As Object, e As EventArgs) Handles addEmployeeButton.Click
+
+        Dim newEmployee As DataRow = NorthwindW2014FDataSet.Employees.NewRow
+
+        Try
+            newEmployee("EmployeeID") = EmployeeIDTextBox.Text
+            newEmployee("LastName") = LastNameTextBox.Text
+            newEmployee("FirstName") = FirstNameTextBox.Text
+            newEmployee("Title") = TitleTextBox.Text
+            newEmployee("TitleOfCourtesy") = TitleOfCourtesyTextBox.Text
+            newEmployee("BirthDate") = Convert.ToDateTime(BirthDateDateTimePicker.Value)
+            newEmployee("HireDate") = Convert.ToDateTime(HireDateDateTimePicker.Value)
+            newEmployee("Address") = AddressTextBox.Text
+            newEmployee("City") = CityTextBox.Text
+            newEmployee("Region") = RegionTextBox.Text
+            newEmployee("PostalCode") = PostalCodeTextBox.Text
+            newEmployee("Country") = CountryTextBox.Text
+            newEmployee("HomePhone") = HomePhoneTextBox.Text
+            newEmployee("Extension") = ExtensionTextBox.Text
+            newEmployee("Notes") = NotesTextBox.Text
+            newEmployee("ReportsTo") = ReportsToTextBox.Text
+            NorthwindW2014FDataSet.Employees.Rows.Add(newEmployee)
+            EmployeesTableAdapter.Update(NorthwindW2014FDataSet)
+            MessageBox.Show("Employee information has been added.", "Employee Added")
+
+        Catch fe As FormatException
+            MessageBox.Show(fe.Message)
+            Exit Sub
+
+        Catch ex As Exception
+            MessageBox.Show(ex.Message)
+            Exit Sub
+
+        End Try
+
+        addEmployeeButton.Enabled = False
+
+    End Sub-
+
+End Class
