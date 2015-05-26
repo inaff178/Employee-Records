@@ -1,0 +1,15 @@
+Public Class IndividualEmployeeRecordForm
+
+    Private Sub IndividualEmployeeRecordForm_Load(sender As Object, e As EventArgs) Handles MyBase.Load
+
+        Try
+            Me.EmployeesTableAdapter.FillByEmpID(Me.NorthwindW2014FDataSet.Employees, CType(selectedEmployee, Integer))
+
+        Catch ex As System.Exception
+            System.Windows.Forms.MessageBox.Show(ex.Message)
+
+        End Try
+
+    End Sub
+
+End Class
